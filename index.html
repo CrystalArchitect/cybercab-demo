@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cybercab | Tesla</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #000;
+      --ink: #fff;
+      --muted: rgba(255,255,255,.72);
+      --line: rgba(255,255,255,.18);
+      --btn: #fff;
+      --btn-ink: #171a20;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    html, body { background: var(--bg); color: var(--ink); font-family: Inter, system-ui, sans-serif; }
+    body { overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; }
+
+    .wordmark {
+      width: 122px;
+      height: 16px;
+      display: block;
+      fill: currentColor;
+    }
+
+    header {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 40;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 18px 28px;
+      color: #fff;
+      mix-blend-mode: difference;
+    }
+    header nav {
+      display: flex;
+      gap: 4px;
+    }
+    header nav a, .icon-btn {
+      padding: 6px 12px;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 4px;
+    }
+    header nav a:hover, .icon-btn:hover { background: rgba(255,255,255,.12); }
+    .right-tools {
+      display: flex;
+      justify-content: flex-end;
+      gap: 2px;
+    }
+    .icon-btn {
+      background: none;
+      border: 0;
+      color: inherit;
+      width: 36px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+    }
+    .menu { display: none; }
+
+    .hero {
+      min-height: 100svh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 92px 24px 48px;
+      text-align: center;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,.28) 0%, transparent 28%, transparent 62%, rgba(0,0,0,.45) 100%),
+        url("assets/hero-cdn.jpg") center 42% / cover no-repeat;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 5vw, 48px);
+      font-weight: 500;
+      letter-spacing: -0.03em;
+    }
+    .hero p {
+      margin-top: 8px;
+      font-size: 18px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+    .btns {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn {
+      min-width: 220px;
+      height: 40px;
+      padding: 0 24px;
+      border-radius: 4px;
+      border: 0;
+      font-size: 14px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn.solid { background: var(--btn); color: var(--btn-ink); }
+    .btn.ghost { background: rgba(23,26,32,.65); color: #fff; backdrop-filter: blur(8px); }
+    .btn.ghost.light { background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.28); }
+    .btn:hover { filter: brightness(1.06); }
+
+    section.shot {
+      min-height: 100svh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 92px 24px 48px;
+      text-align: center;
+      background-size: cover;
+      background-position: center;
+    }
+    .shot h2 {
+      font-size: clamp(32px, 4.4vw, 44px);
+      font-weight: 500;
+      letter-spacing: -0.03em;
+    }
+    .shot .sub { margin-top: 8px; font-size: 17px; color: var(--muted); }
+
+    .doors { background-image: linear-gradient(to bottom, rgba(0,0,0,.22), transparent 30%, rgba(0,0,0,.35)), url("assets/doors.jpg"); background-position: 50% 60%; }
+    .night { background-image: linear-gradient(to bottom, rgba(0,0,0,.3), transparent 32%, rgba(0,0,0,.4)), url("assets/hero-night.jpg"); }
+    .fleet { background-image: linear-gradient(to bottom, rgba(0,0,0,.18), transparent 34%, rgba(0,0,0,.28)), url("assets/robotaxi-hero.jpg"); color: #fff; }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      min-height: 100svh;
+      background: #0b0b0c;
+    }
+    .split .photo {
+      min-height: 56svh;
+      background: url("assets/cabin.jpg") center 58% / cover no-repeat;
+    }
+    .split .copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 72px 64px;
+      gap: 18px;
+    }
+    .split h2 { font-size: clamp(30px, 3.4vw, 40px); font-weight: 500; letter-spacing: -0.03em; }
+    .split p { color: var(--muted); font-size: 16px; line-height: 1.55; max-width: 42ch; }
+    .facts { display: grid; gap: 18px; margin-top: 10px; }
+    .facts dt { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+    .facts dd { font-size: 22px; font-weight: 500; letter-spacing: -0.02em; }
+
+    .specs {
+      padding: 96px 24px 80px;
+      background: #000;
+    }
+    .specs-inner { max-width: 1080px; margin: 0 auto; text-align: center; }
+    .specs h2 { font-size: clamp(30px, 4vw, 40px); font-weight: 500; letter-spacing: -0.03em; }
+    .specs .lead { margin: 12px auto 48px; max-width: 44ch; color: var(--muted); }
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 28px 22px 26px;
+      text-align: left;
+      background: #0d0d0e;
+    }
+    .card strong { display: block; font-size: 20px; font-weight: 500; letter-spacing: -0.02em; }
+    .card span { display: block; margin-top: 8px; color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+    .reserve {
+      padding: 100px 24px 80px;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.72)),
+        url("assets/side.jpg") center 60% / cover no-repeat;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+    }
+    .panel {
+      width: min(520px, 100%);
+      background: rgba(12,12,14,.82);
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(18px);
+      border-radius: 16px;
+      padding: 32px 28px 28px;
+    }
+    .panel h2 { font-size: 28px; font-weight: 500; letter-spacing: -0.03em; }
+    .panel p { color: var(--muted); margin: 8px 0 22px; font-size: 15px; }
+    label { display: block; font-size: 12px; color: rgba(255,255,255,.62); margin-bottom: 6px; }
+    input, select {
+      width: 100%;
+      height: 42px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      color: #fff;
+      padding: 0 12px;
+      margin-bottom: 14px;
+      outline: none;
+    }
+    input:focus, select:focus { border-color: rgba(255,255,255,.45); }
+    select option { color: #111; }
+    .ok { display: none; padding: 18px 0 6px; }
+    .ok.show { display: block; }
+    .ok h3 { font-size: 22px; font-weight: 500; }
+    .ok p { margin-top: 8px; }
+
+    footer {
+      padding: 36px 24px 48px;
+      color: rgba(255,255,255,.45);
+      font-size: 12px;
+      text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px 22px;
+    }
+
+    dialog {
+      border: 0;
+      border-radius: 14px;
+      padding: 0;
+      background: #111;
+      color: #fff;
+      width: min(440px, 92vw);
+    }
+    dialog::backdrop { background: rgba(0,0,0,.62); }
+    .sheet { padding: 24px; }
+    .sheet h3 { font-size: 20px; font-weight: 500; margin-bottom: 8px; }
+    .sheet p { color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+    @media (max-width: 860px) {
+      header { grid-template-columns: 1fr auto; }
+      header nav { display: none; }
+      .menu { display: grid; }
+      .split { grid-template-columns: 1fr; }
+      .split .copy { padding: 48px 24px 64px; }
+      .spec-grid { grid-template-columns: 1fr; }
+      .btn { min-width: 160px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="#top" aria-label="Tesla">
+      <svg class="wordmark" viewBox="0 0 342 35" aria-hidden="true">
+        <path d="M0 .1a9.7 9.7 0 007 7h11l.5.1v27.6h6.8V7.3L26 7h11a9.8 9.8 0 007-7H0zm238.6 0h-6.8v34.8H263a9.7 9.7 0 006-6.8h-30.3V0zm-52.3 6.8c3.6-1 6.6-3.8 7.4-6.9l-38.1.1v20.6h31.1v7.2h-24.4a13.6 13.6 0 00-8.7 7h39.9v-21h-31.2v-7h24zm116.2 28h6.7v-14h24.6v14h6.7v-21h-38zM85.3 7h26a9.6 9.6 0 007.1-7H78.3a9.6 9.6 0 007 7zm0 13.8h26a9.6 9.6 0 007.1-7H78.3a9.6 9.6 0 007 7zm0 14.1h26a9.6 9.6 0 007.1-7H78.3a9.6 9.6 0 007 7zM308.5 7h26a9.6 9.6 0 007-7h-40a9.6 9.6 0 007 7z"/>
+      </svg>
+    </a>
+    <nav>
+      <a href="#cybercab">Cybercab</a>
+      <a href="#cabin">Cabin</a>
+      <a href="#fleet">Robotaxi</a>
+      <a href="#reserve">Reserve</a>
+    </nav>
+    <div class="right-tools">
+      <a class="icon-btn" href="#reserve" aria-label="Account">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="7" r="3"/><path d="M4 17c1.2-3 10.8-3 12 0"/></svg>
+      </a>
+      <button class="icon-btn menu" id="menuBtn" aria-label="Menu">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h12M4 10h12M4 14h12"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <section class="hero" id="top">
+    <div>
+      <h1>Cybercab</h1>
+      <p>Purpose-built for autonomy</p>
+    </div>
+    <div class="btns">
+      <a class="btn solid" href="#reserve">Reserve</a>
+      <a class="btn ghost" href="#cabin">Learn More</a>
+    </div>
+  </section>
+
+  <section class="shot doors" id="cybercab">
+    <div>
+      <h2>No steering wheel. No pedals.</h2>
+      <p class="sub">A two-seat cabin designed around the ride, not the driver.</p>
+    </div>
+    <div class="btns">
+      <a class="btn solid" href="#cabin">See the cabin</a>
+      <a class="btn ghost" href="#reserve">Reserve</a>
+    </div>
+  </section>
+
+  <section class="split" id="cabin">
+    <div class="photo" role="img" aria-label="Cybercab cabin with lounge seats and a center display"></div>
+    <div class="copy">
+      <h2>The whole cabin is the front row</h2>
+      <p>Butterfly doors, lounge seating, and a single display. No driver controls. You get in, sit down, and the car takes you there.</p>
+      <dl class="facts">
+        <div>
+          <dt>Layout</dt>
+          <dd>2 seats · no wheel · no pedals</dd>
+        </div>
+        <div>
+          <dt>Entry</dt>
+          <dd>Falcon-wing doors, both sides</dd>
+        </div>
+        <div>
+          <dt>Job</dt>
+          <dd>Autonomous ride-hailing</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="shot night">
+    <div>
+      <h2>Summoned to the curb</h2>
+      <p class="sub">It arrives, the doors lift, and the ride starts itself.</p>
+    </div>
+    <div class="btns">
+      <a class="btn solid" href="#reserve">Join the list</a>
+    </div>
+  </section>
+
+  <section class="specs">
+    <div class="specs-inner">
+      <h2>Built as a robotaxi, not a converted car</h2>
+      <p class="lead">The design removes everything a human driver needs so the cabin can be quieter, cheaper to run, and simpler to ride.</p>
+      <div class="spec-grid">
+        <article class="card">
+          <strong>No driver controls</strong>
+          <span>No steering wheel, no pedals, no mirrors. The interior is for passengers only.</span>
+        </article>
+        <article class="card">
+          <strong>Butterfly doors</strong>
+          <span>Both sides lift so you step in from the curb without a B-pillar in the way.</span>
+        </article>
+        <article class="card">
+          <strong>Fleet first</strong>
+          <span>Made to run all day in a robotaxi network, then charge and go back out.</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="shot fleet" id="fleet">
+    <div>
+      <h2>Robotaxi</h2>
+      <p class="sub">Autonomous rides start with the fleet you already know. Cybercab is next.</p>
+    </div>
+    <div class="btns">
+      <a class="btn solid" href="#reserve">Get updates</a>
+      <button class="btn ghost light" id="watchBtn" type="button">How it works</button>
+    </div>
+  </section>
+
+  <section class="reserve" id="reserve">
+    <form class="panel" id="reserveForm">
+      <h2>Reserve Cybercab</h2>
+      <p>Leave a city and a way to reach you. This is a local demo page — nothing is sent to Tesla.</p>
+      <div id="formFields">
+        <label for="name">Name</label>
+        <input id="name" name="name" required autocomplete="name" />
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required autocomplete="email" />
+        <label for="city">City</label>
+        <select id="city" name="city" required>
+          <option value="" selected disabled>Choose a city</option>
+          <option>Austin</option>
+          <option>Los Angeles</option>
+          <option>San Francisco</option>
+          <option>New York</option>
+          <option>Miami</option>
+          <option>Other</option>
+        </select>
+        <button class="btn solid" type="submit" style="width:100%;margin-top:6px">Reserve</button>
+      </div>
+      <div class="ok" id="formOk">
+        <h3>You’re on the list</h3>
+        <p id="formMsg"></p>
+      </div>
+    </form>
+  </section>
+
+  <footer>
+    <span>Cybercab landing · Figma → live demo</span>
+    <a href="design.html">Open the Figma board</a>
+    <a href="compare.html">Design vs live</a>
+  </footer>
+
+  <dialog id="how">
+    <div class="sheet">
+      <h3>How a ride works</h3>
+      <p>1. Request a car in the app.<br />2. Cybercab pulls up and the doors lift.<br />3. Sit down. There is no driver seat to take.<br />4. The car drives the route and drops you at the curb.</p>
+      <button class="btn solid" style="margin-top:18px;width:100%" id="closeHow">Close</button>
+    </div>
+  </dialog>
+
+  <script>
+    const form = document.getElementById("reserveForm");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const city = document.getElementById("city").value;
+      document.getElementById("formFields").style.display = "none";
+      const ok = document.getElementById("formOk");
+      ok.classList.add("show");
+      document.getElementById("formMsg").textContent =
+        name + " · " + city + ". We’ll keep this on the page only.";
+    });
+
+    const how = document.getElementById("how");
+    document.getElementById("watchBtn").addEventListener("click", () => how.showModal());
+    document.getElementById("closeHow").addEventListener("click", () => how.close());
+
+    document.getElementById("menuBtn").addEventListener("click", () => {
+      const nav = document.querySelector("header nav");
+      const open = nav.style.display === "flex";
+      nav.style.display = open ? "none" : "flex";
+      nav.style.position = "absolute";
+      nav.style.top = "58px";
+      nav.style.right = "16px";
+      nav.style.flexDirection = "column";
+      nav.style.background = "rgba(0,0,0,.82)";
+      nav.style.padding = "10px";
+      nav.style.borderRadius = "10px";
+      nav.style.mixBlendMode = "normal";
+    });
+  </script>
+</body>
+</html>
